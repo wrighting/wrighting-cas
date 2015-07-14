@@ -91,7 +91,7 @@
 		DAOs + -->
 	<bean id="usernameAttributeProvider"
 		class="org.jasig.services.persondir.support.SimpleUsernameAttributeProvider">
-		<property name="usernameAttribute" value="mail" />
+		<property name="usernameAttribute" value="${ldap.auth.field}" />
 	</bean>
 
 	<!-- Sample, in-memory data store for the ServiceRegistry. A real implementation 
@@ -166,7 +166,7 @@
 	<!-- This could be done with direct bind http://jasig.github.io/cas/installation/LDAP-Authentication.html -->
 	<bean id="ldapAuthenticationHandler"
 		class="org.jasig.cas.authentication.LdapAuthenticationHandler"
-		p:principalIdAttribute="mail" c:authenticator-ref="authenticator">
+		p:principalIdAttribute="${ldap.auth.field}" c:authenticator-ref="authenticator">
 		<property name="principalAttributeMap">
 			<map>
 				<entry value="casId" key="cn" />
@@ -186,7 +186,7 @@
     <!-- 
  	<bean id="ldapAuthenticationHandler"
 		class="org.jasig.cas.authentication.LdapAuthenticationHandler"
-		p:principalIdAttribute="mail" c:authenticator-ref="authenticator">
+		p:principalIdAttribute="${ldap.auth.field}" c:authenticator-ref="authenticator">
 		<property name="principalAttributeMap">
 			<map>
 				<entry value="familyName" key="sn" />

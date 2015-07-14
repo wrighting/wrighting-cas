@@ -6,8 +6,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<cas.version>4.0.0</cas.version>
-		<spring.security.version>3.1.0.RELEASE</spring.security.version>
+		<cas.version>4.0.3</cas.version>
 
 		<wrighting.cas.server.name>https://www.wrighting.org</wrighting.cas.server.name>
 		<wrighting.cas.context>sso</wrighting.cas.context>
@@ -17,7 +16,8 @@
 		<wrighting.ldap.manager.userdn>cn=admin,dc=wrighting,dc=org</wrighting.ldap.manager.userdn>
 		<wrighting.ldap.authentication.basedn>ou=users,ou=people,dc=wrighting,dc=org</wrighting.ldap.authentication.basedn>
 		<wrighting.ldap.search.filter>(mail={user})</wrighting.ldap.search.filter>
-		<wrighting.ldap.authn.format>mail=%s,ou=users,ou=people,dc=wrighting,dc=org</wrighting.ldap.authn.format>
+		<wrighting.ldap.authn.field>uid</wrighting.ldap.authn.field>
+		<wrighting.ldap.authn.format>uid=%s,ou=users,ou=people,dc=wrighting,dc=org</wrighting.ldap.authn.format>
 		<wrighting.ldap.useStartTLS>false</wrighting.ldap.useStartTLS>
 
 		<wrighting.mail.host>localhost</wrighting.mail.host>
