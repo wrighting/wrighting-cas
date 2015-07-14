@@ -1,0 +1,37 @@
+dn: ou=people,dc=wrighting,dc=org
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=wrighting,dc=org
+objectClass: organizationalUnit
+ou: groups
+
+dn: ou=users,ou=people,dc=wrighting,dc=org
+objectClass: organizationalUnit
+ou: users
+
+dn: ou=system,ou=people,dc=wrighting,dc=org
+objectClass: organizationalUnit
+ou: system
+
+dn: ou=manage,ou=groups,dc=wrighting,dc=org
+objectClass: organizationalUnit
+ou: manage
+
+dn: cn=pwm,ou=system,ou=people,dc=wrighting,dc=org
+cn: pwm
+objectClass: person
+objectClass: top
+sn: pwm
+
+dn: cn=usersAuth,ou=manage,ou=groups,dc=wrighting,dc=org
+objectClass: groupOfNames
+cn: usersAuth
+member: cn=pwm,ou=system,ou=people,dc=wrighting,dc=org
+
+dn: cn=pwmTestUser,ou=users,ou=people,dc=wrighting,dc=org
+objectClass: inetOrgPerson
+objectClass: pwmUser
+cn: pwmTestUser
+sn: pwmTestUser
+

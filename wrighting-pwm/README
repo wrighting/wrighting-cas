@@ -1,0 +1,28 @@
+For local test you need to enable port 8443 in tomcat e.g. by adding the following to server.xml
+
+<Connector SSLEnabled="true" clientAuth="false" maxThreads="150" port="8443" protocol="HTTP/1.1" scheme="https" secure="true" sslProtocol="TLS" ciphers="SSL_RSA_WITH_RC4_128_SHA"/>
+
+To install / upgrade the dojo
+
+This is needed to install dgrid used on the groups page
+
+First install cpm
+curl https://raw.github.com/kriszyp/cpm/master/install | CPM_INSTALL_LIB=~/lib CPM_INSTALL_BIN=~/bin sh
+
+There's a problem with dojox which means that you need to:
+apt-get install nodejs
+create a ~/.cpm.conf file with CPM_USE_NODE=1
+
+pwm 1.6.4 uses dojo 1.7.0 whereas these commands use the latest version
+
+Create a temporary directory and change into it
+cpm install dgrid
+cpm install dijit
+cpm install dojox
+
+Now create a zip
+zip -r dojo.zip *
+
+Copy the dojo.zip to src/main/webapp/resources
+
+You can now delete your temporary directory

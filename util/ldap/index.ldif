@@ -1,0 +1,15 @@
+iwright@mail:~/ldap$ cat index.ldif 
+dn: olcDatabase={1}mdb,cn=config
+changetype: modify
+replace: olcDbIndex
+olcDbIndex: uidNumber eq
+olcDbIndex: gidNumber eq
+olcDbIndex: loginShell eq
+olcDbIndex: uid eq,pres,sub
+olcDbIndex: memberUid eq,pres,sub
+olcDbIndex: uniqueMember eq,pres
+olcDbIndex: cn eq
+olcDbIndex: mail eq
+olcDbIndex: objectClass eq
+olcDbIndex: member eq
+

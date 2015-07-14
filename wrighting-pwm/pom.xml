@@ -1,0 +1,168 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.wrighting.cas</groupId>
+		<artifactId>wrighting-cas</artifactId>
+		<version>1.0.2-SNAPSHOT</version>
+	</parent>
+	<artifactId>wrighting-pwm</artifactId>
+	<packaging>war</packaging>
+	<name>PWM customizations</name>
+
+	<properties>
+		<!-- admin -->
+		<pwm.config.editable>false</pwm.config.editable>
+		<pwm.config.newUser.enable>false</pwm.config.newUser.enable>
+		<pwm.ldap.proxy.password>807NvCbEPo4mfdf5EAdCGg==</pwm.ldap.proxy.password>
+		<!-- Note that passwords have to be set via the admin interface -->
+		<cas.client.version>3.2.1</cas.client.version>
+		<wrighting.cas.logout>/logout?service=http://www.wrighting.org/</wrighting.cas.logout>
+		<wrighting.cas.login>/login</wrighting.cas.login>
+		<wrighting.cas.clearPass>/clearPass</wrighting.cas.clearPass>
+
+		<wrighting.ldap.search.basedn>ou=people,dc=wrighting,dc=org</wrighting.ldap.search.basedn>
+		<wrighting.ldap.contacts.basedn>ou=contacts,dc=wrighting,dc=org</wrighting.ldap.contacts.basedn>
+		<wrighting.ldap.userSearchFilter><![CDATA[(&(objectClass=inetOrgPerson)(mail=%USERNAME%))]]></wrighting.ldap.userSearchFilter>
+		<wrighting.ldap.admin.query>(memberOf=cn=helpDesk,ou=manage,ou=groups,dc=wrighting,dc=org)</wrighting.ldap.admin.query>
+		<wrighting.ldap.groupAdmin.query>(memberOf=cn=pwmGroupsAdmin,ou=manage,ou=groups,dc=wrighting,dc=org)</wrighting.ldap.groupAdmin.query>
+		<wrighting.ldap.groupSearchBase>ou=groups,dc=wrighting,dc=org</wrighting.ldap.groupSearchBase>
+		<wrighting.ldap.peopleSearchFilter><![CDATA[(&(objectClass=inetOrgPerson)(|(cn=*%USERNAME%*)(givenName=*%USERNAME%*)(sn=*%USERNAME%*)(mail=*%USERNAME%*)))]]></wrighting.ldap.peopleSearchFilter>
+		<wrighting.ldap.forgottenUsername.searchFilter><![CDATA[(&(objectClass=inetOrgPerson)(mail=%mail%)(sn=%surname%))]]></wrighting.ldap.forgottenUsername.searchFilter>
+		<wrighting.ldap.updateAttributes.queryMatch><![CDATA[(&(objectClass=inetOrgPerson))]]></wrighting.ldap.updateAttributes.queryMatch>
+		<wrighting.ldap.contactAdmin.query>(memberof=cn=contactsAdmin,ou=manage,ou=groups,dc=wrighting,dc=org)</wrighting.ldap.contactAdmin.query>
+		<wrighting.ldap.userAdmin.query>(memberof=cn=usersAdmin,ou=manage,ou=groups,dc=wrighting,dc=org)</wrighting.ldap.userAdmin.query>
+		<wrighting.mail.admin.to>sysadmin@wrighting.org</wrighting.mail.admin.to>
+		<wrighting.mail.admin.from>sysadmin@wrighting.org</wrighting.mail.admin.from>
+		<wrighting.mail.accounts.from>accounts@wrighting.org</wrighting.mail.accounts.from>
+                <wrighting.text.domain>Wrighting</wrighting.text.domain>
+                <wrighting.theme>default</wrighting.theme>
+		<wrighting.wordlist>wordlist-giant.zip</wrighting.wordlist>
+	</properties>
+
+	<!-- install the pwm war as follows: mvn install:install-file -DgroupId=password.pwm 
+		-DartifactId=pwm -Dversion=1.6.4 -Dpackaging=war -Dfile=/home/iwright/Downloads/pwm_v1.6.4/pwm.war -->
+	<!-- install the pwm-servlet jar as follows: mvn install:install-file -DgroupId=password.pwm 
+		-DartifactId=pwm-servlet -Dversion=1.6.4 -Dpackaging=jar -Dfile=/home/iwright/Downloads/pwm_v1.6.4/pwm/WEB-INF/lib/pwm-servlet.jar -->
+
+	<dependencies>
+		<dependency>
+			<groupId>password.pwm</groupId>
+			<artifactId>pwm</artifactId>
+			<version>1.7.1</version>
+			<type>war</type>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- Used to allow overriding and new classes without including all pwm 
+			code -->
+		<dependency>
+			<groupId>password.pwm</groupId>
+			<artifactId>pwm-servlet</artifactId>
+			<version>1.7.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+ 		<dependency>
+ 			<groupId>javax.servlet.jsp</groupId>
+ 			<artifactId>javax.servlet.jsp-api</artifactId>
+ 			<version>2.2.1</version>
+ 			<scope>provided</scope>
+ 		</dependency>
+ 		<dependency>
+ 			<groupId>javax.el</groupId>
+ 			<artifactId>javax.el-api</artifactId>
+ 			<version>2.2.2</version>
+ 			<scope>provided</scope>
+ 		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>1.7.1</version>
+		</dependency>
+		<!-- Needs to be at least r51 otherwise passwords stored in plain text 
+			no current released version r64 doesn't work.... -->
+		<!-- mvn install:install-file -DgroupId=com.novell -DartifactId=ldapchai 
+			-Dversion=v0.6.3-SNAPSHOT-r64 -Dpackaging=jar -Dfile=build/ldapChai.jar -->
+		<dependency>
+			<groupId>com.novell</groupId>
+			<artifactId>ldapchai</artifactId>
+			<version>0_6_4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jasig.cas.client</groupId>
+			<artifactId>cas-client-core</artifactId>
+			<version>${cas.client.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sleepycat</groupId>
+			<artifactId>je</artifactId>
+			<version>5.0.73</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient-cache</artifactId>
+			<version>4.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.2</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>pwm</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<webResources>
+						<resource>
+							<directory>src/main/filtered/</directory>
+							<filtering>true</filtering>
+						</resource>
+					</webResources>
+					<overlays>
+						<!-- configure overlay of pwm -->
+						<overlay>
+							<groupId>password.pwm</groupId>
+							<artifactId>pwm</artifactId>
+							<excludes>
+								<exclude>WEB-INF/lib/ldapChai.jar</exclude>
+								<exclude>WEB-INF/lib/cas-client-core-3.2.0.jar</exclude>
+								<exclude>WEB-INF/lib/commons-logging-1.1.1.jar</exclude>
+								<exclude>WEB-INF/lib/gson-1.7.1.jar</exclude>
+								<exclude>WEB-INF/lib/pwm-servlet.jar</exclude>
+								<exclude>WEB-INF/lib/je-5.0.58.jar</exclude>
+								<exclude>WEB-INF/lib/httpcore-4.1.jar</exclude>
+								<exclude>WEB-INF/lib/commons-codec-1.4.jar</exclude>
+								<exclude>WEB-INF/lib/httpclient-cache-4.1.1.jar</exclude>
+								<exclude>WEB-INF/lib/commons-lang-2.6.jar</exclude>
+								<exclude>WEB-INF/lib/mail.jar</exclude>
+								<exclude>resources/dojo.zip</exclude>
+							</excludes>
+						</overlay>
+					</overlays>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

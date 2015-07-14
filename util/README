@@ -1,0 +1,18 @@
+For self signed certificates
+
+Apache
+
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout wrighting.key -out wrighting.crt
+
+SSLCertificateFile	/etc/ssl/certs/wrighting.crt
+SSLCertificateKeyFile /etc/ssl/private/wrighting.key
+
+Tomcat
+keytool -genkey -alias tomcat -keyalg RSA
+File created is ~/.keystore which should be referenced in /etc/tomcat7/server.xml
+
+Run:
+javac InstallCert.java
+java InstallCert hostname
+
+Copy jssecacerts to /etc/ssl/certs/java - make sure it is readable by the tomcat user

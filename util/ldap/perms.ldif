@@ -1,0 +1,35 @@
+dn: olcDatabase={1}mdb,cn=config
+changetype: modify
+replace: olcAccess
+olcAccess: to attrs=userPassword,shadowLastChange,pwmResponseSet,pwmLastPwdUpdate,pwmGUID,pwmUser,pwmEventLog
+  by anonymous auth
+  by dn="cn=pwm,ou=system,ou=people,dc=wrighting,dc=org" write
+  by dn="cn=admin,dc=wrighting,dc=org" write
+  by self write
+  by * none
+olcAccess: to dn.subtree="ou=people,dc=wrighting,dc=org"
+  by self write
+  by dn.exact="cn=admin,dc=wrighting,dc=org" write
+  by group.exact="cn=usersAuth,ou=manage,ou=groups,dc=wrighting,dc=org" read
+  by * none
+olcAccess: to dn.subtree="ou=users,ou=people,dc=wrighting,dc=org"
+  by self write
+  by dn.exact="cn=admin,dc=wrighting,dc=org" write
+  by group.exact="cn=usersAuth,ou=manage,ou=groups,dc=wrighting,dc=org" read
+  by * none
+olcAccess: to dn.regex="ou=([a-z]*),ou=groups,dc=wrighting,dc=org$"
+   by dn.exact="cn=admin,dc=wrighting,dc=org" write
+   by group.expand="cn=$1Admin,ou=manage,ou=groups,dc=wrighting,dc=org" write
+   by group.expand="cn=$1Read,ou=manage,ou=groups,dc=wrighting,dc=org" read
+   by * auth
+olcAccess: to dn.subtree="ou=groups,dc=wrighting,dc=org"
+   by dn.exact="cn=admin,dc=wrighting,dc=org" write
+   by group.exact="cn=groupsAdmin,ou=manage,ou=groups,dc=wrighting,dc=org" write
+   by group.exact="cn=groupsRead,ou=manage,ou=groups,dc=wrighting,dc=org" read
+   by anonymous auth
+   by * none
+olcAccess: to *
+  by self write
+  by dn="cn=admin,dc=wrighting,dc=org" write
+  by * none
+

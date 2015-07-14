@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="wrighting-pwm">
+        <dependent-module deploy-path="/" handle="module:/overlay/var/M2_REPO/password/pwm/pwm/1.6.4/pwm-1.6.4.war?unpackFolder=target/m2e-wtp/overlays&amp;includes=**/**&amp;excludes=WEB-INF/lib/ldapChai.jar;WEB-INF/lib/cas-client-core-3.2.0.jar;WEB-INF/lib/commons-logging-1.1.1.jar;WEB-INF/lib/gson-1.7.1.jar;WEB-INF/lib/pwm-servlet.jar;WEB-INF/lib/je-5.0.58.jar;WEB-INF/lib/httpcore-4.1.jar;WEB-INF/lib/commons-codec-1.4.jar;WEB-INF/lib/httpclient-cache-4.1.1.jar;WEB-INF/lib/commons-lang-2.6.jar;WEB-INF/lib/mail.jar;resources/dojo.zip">
+            <dependency-type>consumes</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/" handle="module:/overlay/slf/?includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
+            <dependency-type>consumes</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="pwm"/>
+        <property name="java-output-path" value="/wrighting-pwm/target/pwm/WEB-INF/classes"/>
+        <wb-resource deploy-path="/" source-path="target/pwm" tag="defaultRootSource"/>
+		<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+		<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
+		<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/webapp"/>
+    </wb-module>
+</project-modules>
