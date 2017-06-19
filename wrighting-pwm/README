@@ -1,6 +1,4 @@
-For local test you need to enable port 8443 in tomcat e.g. by adding the following to server.xml
-
-<Connector SSLEnabled="true" clientAuth="false" maxThreads="150" port="8443" protocol="HTTP/1.1" scheme="https" secure="true" sslProtocol="TLS" ciphers="SSL_RSA_WITH_RC4_128_SHA"/>
+For local test you need to enable port 8443 in tomcat see parent README for settings
 
 To install / upgrade the dojo
 

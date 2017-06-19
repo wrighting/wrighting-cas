@@ -1,39 +1,30 @@
 wrighting-cas
 ==============
 
-Example .m2/settings file
+Example .m2/settings file is in util
 The ldap.manager.password needs to be the actual password
 pwm.ldap.proxy.password needs to be the PWM encoded password
 Assumes using mail address to authorize
 
-<settings xmlns="http://maven.apache.org/SETTINGS/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd">
-  <profiles>
-    <profile>
-      <id>ian-profile</id>
-      <activation>
-        <activeByDefault>true</activeByDefault> 
-        <!-- <property><name>eclipse.preferences.version</name></property> -->
-      </activation>
-      <properties>
-	<wrighting.mail.host>localhost</wrighting.mail.host>
-	<wrighting.cas.server.name>https://wrighting.org</wrighting.cas.server.name>
-	<wrighting.cas.logout>/logout?service=http://wrighting.org/</wrighting.cas.logout>
-	<wrighting.cas.context>sso</wrighting.cas.context>
-	<wrighting.cas.host.name>wrighting.org</wrighting.cas.host.name>
-        <wrighting.ldap.url>ldap://localhost:389</wrighting.ldap.url>
-	<wrighting.ldap.useStartTLS>false</wrighting.ldap.useStartTLS>
-        <pwm.ldap.proxy.password>*************</pwm.ldap.proxy.password>
-        <wrighting.ldap.manager.userdn>cn=pwm,ou=system,ou=people,dc=wrighting,dc=org</wrighting.ldap.manager.userdn>
-	<wrighting.ldap.manager.password><![CDATA[*************]]></wrighting.ldap.manager.password>
-	<wrighting.ldap.authentication.basedn>ou=users,ou=people,dc=wrighting,dc=org</wrighting.ldap.authentication.basedn>
-	<wrighting.ldap.search.filter>(uid={user})</wrighting.ldap.search.filter>
-	<wrighting.ldap.authn.format>mail=%s,ou=users,ou=people,dc=wrighting,dc=org</wrighting.ldap.authn.format>
-        <logDirectory>/var/log/tomcat7/</logDirectory>
-        <logAppender>cas</logAppender>
-        <wrighting.config.newUser.enable>false</wrighting.config.newUser.enable>
-      </properties>
-    </profile>
-  </profiles>
+Tomcat configuration
+====================
 
-</settings>
+You should ensure that tomcat is using java8 e.g. by setting JAVA_HOME in /etc/default/tomcat8 as update-alternatives might not set this correctly
+
+https://tomcat.apache.org/tomcat-8.0-doc/security-howto.html
+https://tomcat.apache.org/tomcat-8.0-doc/ssl-howto.html
+
+https://blog.eveoh.nl/2014/02/tls-ssl-ciphers-pfs-tomcat/
+
+What represents secure settings changes over time so this is only an indication
+
+    <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol" SSLEnabled="true"
+               maxThreads="150" scheme="https" keystoreFile="/etc/tomcat8/keystore"
+               secure="true" connectionTimeout="240000" clientAuth="false" sslProtocol="TLSv1.2" ciphers="TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_RC4_128_SHA,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA256,TLS_RSA_WITH_AES_256_CBC_SHA,SSL_RSA_WITH_RC4_128_SHA"/>
+
+If you are using a proxy then you can restrict access by using firewall rules or you *may* want to configure a trust relationship e.g. by adding the attributes (Not covering how to create this)
+
+Firewall
+========
+
+sudo ufw allow from 192.168.0.4 to any port 8443 proto tcp
